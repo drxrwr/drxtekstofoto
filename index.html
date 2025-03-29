@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teks to Foto</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #222;
+            color: white;
+            font-family: monospace;
+        }
+        .window {
+            background: #333;
+            width: 400px;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .header {
+            display: flex;
+            gap: 5px;
+            padding: 5px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .red { background: #ff5f57; }
+        .yellow { background: #ffbd2e; }
+        .green { background: #28c840; }
+        canvas {
+            background: black;
+            color: green;
+            display: block;
+            margin-top: 10px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="window">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+        </div>
+        <input type="text" id="text" placeholder="Masukkan teks...">
+        <select id="fontSize">
+            <option value="16">16px</option>
+            <option value="24">24px</option>
+            <option value="32">32px</option>
+        </select>
+        <select id="size">
+            <option value="landscape">Landscape</option>
+            <option value="portrait">Portrait</option>
+            <option value="square">Kotak</option>
+        </select>
+        <button onclick="generateImage()">Generate</button>
+        <button onclick="downloadImage()">Download</button>
+        <canvas id="canvas"></canvas>
+    </div>
+    <script>
+        function generateImage() {
+            let text = document.getElementById('text').value;
+            let fontSize = document.getElementById('fontSize').value;
+            let size = document.getElementById('size').value;
+            let canvas = document.getElementById('canvas');
+            let ctx = canvas.getContext('2d');if (size === 'landscape') {
+            canvas.width = 600;
+            canvas.height = 300;
+        } else if (size === 'portrait') {
+            canvas.width = 300;
+            canvas.height = 600;
+        } else {
+            canvas.width = 400;
+            canvas.height = 400;
+        }
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'green';
+        ctx.font = fontSize + 'px monospace';
+        ctx.fillText(text, 20, 50);
+    }
+
+    function downloadImage() {
+        let canvas = document.getElementById('canvas');
+        let link = document.createElement('a');
+        link.download = 'teks_terminal.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }
+</script>
+
+</body>
+</html>
