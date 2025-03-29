@@ -48,6 +48,15 @@
             border: none;
             cursor: pointer;
         }
+        textarea {
+            width: 100%;
+            height: 100px;
+            background: #111;
+            color: green;
+            font-family: monospace;
+            border: none;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -57,11 +66,14 @@
             <div class="dot yellow"></div>
             <div class="dot green"></div>
         </div>
-        <input type="text" id="text" placeholder="Masukkan teks...">
+        <textarea id="text" placeholder="Masukkan teks..."></textarea>
         <select id="fontSize">
             <option value="16">16px</option>
             <option value="24">24px</option>
             <option value="32">32px</option>
+            <option value="40">40px</option>
+            <option value="48">48px</option>
+            <option value="56">56px</option>
         </select>
         <select id="size">
             <option value="landscape">Landscape</option>
@@ -74,7 +86,7 @@
     </div>
     <script>
         function generateImage() {
-            let text = document.getElementById('text').value;
+            let text = document.getElementById('text').value.split('\n');
             let fontSize = document.getElementById('fontSize').value;
             let size = document.getElementById('size').value;
             let canvas = document.getElementById('canvas');
@@ -91,9 +103,31 @@
 
         ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Gambar titik-titik hiasan
+        ctx.fillStyle = '#ff5f57';
+        ctx.beginPath();
+        ctx.arc(20, 20, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffbd2e';
+        ctx.beginPath();
+        ctx.arc(40, 20, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#28c840';
+        ctx.beginPath();
+        ctx.arc(60, 20, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Gambar teks
         ctx.fillStyle = 'green';
         ctx.font = fontSize + 'px monospace';
-        ctx.fillText(text, 20, 50);
+        let y = 60;
+        for (let line of text) {
+            ctx.fillText(line, 20, y);
+            y += parseInt(fontSize) + 10;
+        }
     }
 
     function downloadImage() {
